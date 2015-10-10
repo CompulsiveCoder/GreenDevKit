@@ -1,3 +1,12 @@
+#include <JeeLib.h> 
+
+// Sleeper
+ISR(WDT_vect) { Sleepy::watchdogEvent(); }
+
+// <Thresholds>
+const int sleepDuration = 1000;
+// </Thresholds>
+
 // <SensorPinCount>
 const int sensorPinCount = 2;
 // </SensorPinCount>
@@ -60,18 +69,7 @@ void setup() {
 void loop() {
   for (int i = 0; i < sizeof(sensorPins); i++)
   {
-    if (sensorPowerPins[i] > -1)
-    {
-      digitalWrite(sensorPowerPins[i], HIGH);
-      delay(500); // TODO: Is this delay necessary?
-    }
-    
-    int rawReading = analogRead(sensorPins[i]);
-  
-    Serial.print("Raw reading: ");
-    Serial.print(i);
-    Serial.print(": ");  
-    Serial.println(rawReading);
+    double rawReading = getRawReading(i);
    
     moistureLevels[i] = map(rawReading, 1023, 350, 0, 100);
     
@@ -99,7 +97,6 @@ void loop() {
     }
   }
   
-  
   /*int ledGraphLevel = map(moistureReading, 1023, 350, 0, totalPatternCount);
   
   Serial.print("LED graph level: "); 
@@ -120,6 +117,29 @@ void loop() {
   shiftOut(dataPin, clockPin, MSBFIRST, ledGraphPatterns[ledGraphLevel]);
   digitalWrite(latchPin, HIGH);
   */
-  delay(500);
+  
+  Sleepy::loseSomeTime(sleepDuration); 
 }
 
+double getRawReading(int index)
+{
+    if (sensorPowerPins[index] > -1)
+    {
+      digitalWrite(sensorPowerPins[index], HIGH);
+      delay(500); // TODO: Is this delay necessary?
+    }
+    
+    int rawReading = analogRead(sensorPins[index]);
+  
+    Serial.print("Raw reading: ");
+    Serial.print(index);
+    Serial.print(": ");  
+    Serial.println(rawReading);
+   
+    if (sensorPowerPins[index] > -1)
+    {
+      digitalWrite(sensorPowerPins[index], LOW);
+    }
+    
+    return rawReading;
+}
