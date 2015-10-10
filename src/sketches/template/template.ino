@@ -30,40 +30,14 @@ const int thresholds[] = {30,30};
 
 int moistureLevels[sensorPinCount];
 
-//const int latchPin = 9;
-//Pin connected to clock pin (SH_CP) of 74HC595
-//const int clockPin = 10;
-////Pin connected to Data in (DS) of 74HC595
-//const int dataPin = 8;
-
-const int threshold = 2; // (0 to 8)
-
-/*byte ledGraphPatterns[] = {
-  B00000001,
-  B00000011,
-  B00000111,
-  B00001111,
-  B00011111,
-  B00111111,
-  B01111111,
-  B11111111,
-};*/
-
-int index = 0;
-//int totalPatternCount = sizeof(ledGraphPatterns);
-
 // Sleeper
 ISR(WDT_vect) { Sleepy::watchdogEvent(); }
 
 void setup() {
   Serial.begin(9600);
-  //pinMode(latchPin, OUTPUT);
-  //pinMode(clockPin, OUTPUT);
-  //pinMode(dataPin, OUTPUT);
+  
   for (int i = 0; i < sizeof(sensorPins); i++)
-  {
     pinMode(pumpPins[i], OUTPUT);
-  }
 }
 
 void loop() {
@@ -74,7 +48,6 @@ void loop() {
     moistureLevels[i] = map(rawReading, 1023, 350, 0, 100);
     
     int currentThreshold = thresholds[i];
-    
     
     if (pumpPins[i] > -1)
     {
@@ -96,27 +69,6 @@ void loop() {
       }
     }
   }
-  
-  /*int ledGraphLevel = map(moistureReading, 1023, 350, 0, totalPatternCount);
-  
-  Serial.print("LED graph level: "); 
-  Serial.println(ledGraphLevel);
-  
-  if (ledGraphLevel < threshold)
-  {
-    Serial.println("Water on");
-    digitalWrite(signalPin, HIGH);
-  }
-  else
-  {
-    Serial.println("Water off");
-    digitalWrite(signalPin, LOW);
-  }
-  
-  digitalWrite(latchPin, LOW);
-  shiftOut(dataPin, clockPin, MSBFIRST, ledGraphPatterns[ledGraphLevel]);
-  digitalWrite(latchPin, HIGH);
-  */
   
   Sleepy::loseSomeTime(sleepDuration); 
 }
