@@ -3,9 +3,9 @@
 // Sleeper
 ISR(WDT_vect) { Sleepy::watchdogEvent(); }
 
-// <Thresholds>
+// <SleepDuration>
 const int sleepDuration = 1000;
-// </Thresholds>
+// </SleepDuration>
 
 // <SensorPinCount>
 const int sensorPinCount = 2;
