@@ -18,12 +18,9 @@ const int pumpPins[] = {4,5};
 const int thresholdPins[] = {A4,A5};
 // </ThresholdPins>
 
-// Fixed thresholds are used when threshold pins are disabled
 // <Thresholds>
-int thresholds[sensorPinCount];
-// </Threshold>
-// Examples:
-//const int thresholds[] = {50,50,50};
+const int thresholds[] = {30,30};
+// </Thresholds>
 
 int moistureLevels[sensorPinCount];
 
