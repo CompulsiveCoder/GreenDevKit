@@ -1,8 +1,5 @@
 #include <JeeLib.h> 
 
-// Sleeper
-ISR(WDT_vect) { Sleepy::watchdogEvent(); }
-
 // <SleepDuration>
 const int sleepDuration = 1000;
 // </SleepDuration>
@@ -54,6 +51,9 @@ const int threshold = 2; // (0 to 8)
 
 int index = 0;
 //int totalPatternCount = sizeof(ledGraphPatterns);
+
+// Sleeper
+ISR(WDT_vect) { Sleepy::watchdogEvent(); }
 
 void setup() {
   Serial.begin(9600);
